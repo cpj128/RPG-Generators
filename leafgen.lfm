@@ -1,0 +1,315 @@
+object Form1: TForm1
+  Left = 296
+  Height = 600
+  Top = 127
+  Width = 800
+  Caption = 'Leavy Generator'
+  ClientHeight = 600
+  ClientWidth = 800
+  OnCreate = FormCreate
+  LCLVersion = '2.2.4.0'
+  object pnLeft: TPanel
+    Left = 0
+    Height = 600
+    Top = 0
+    Width = 170
+    Align = alLeft
+    ClientHeight = 600
+    ClientWidth = 170
+    TabOrder = 0
+    object seLeafSize: TSpinEditEx
+      Left = 80
+      Height = 23
+      Top = 8
+      Width = 80
+      MaxLength = 0
+      TabOrder = 0
+      OnChange = bRedrawClick
+      MaxValue = 500
+      MinValue = 50
+      NullValue = 0
+      Value = 144
+    end
+    object Label1: TLabel
+      Left = 8
+      Height = 15
+      Top = 12
+      Width = 48
+      Caption = 'Leaf Size:'
+      ParentColor = False
+    end
+    object Label2: TLabel
+      Left = 8
+      Height = 15
+      Top = 40
+      Width = 71
+      Caption = 'Leaves/Layer:'
+      ParentColor = False
+    end
+    object seLeavesPerLayer: TSpinEditEx
+      Left = 80
+      Height = 23
+      Top = 36
+      Width = 80
+      MaxLength = 0
+      TabOrder = 1
+      OnChange = bRedrawClick
+      MaxValue = 10
+      MinValue = 3
+      NullValue = 0
+      Value = 5
+    end
+    object Label3: TLabel
+      Left = 8
+      Height = 15
+      Top = 68
+      Width = 36
+      Caption = 'Layers:'
+      ParentColor = False
+    end
+    object seLayers: TSpinEditEx
+      Left = 80
+      Height = 23
+      Top = 64
+      Width = 80
+      MaxLength = 0
+      TabOrder = 2
+      OnChange = bRedrawClick
+      MaxValue = 5
+      MinValue = 1
+      NullValue = 0
+      Value = 2
+    end
+    object fsLayerScale: TFloatSpinEditEx
+      Left = 80
+      Height = 23
+      Top = 92
+      Width = 80
+      MaxLength = 0
+      TabOrder = 3
+      OnChange = bRedrawClick
+      Increment = 0.1
+      MaxValue = 1
+      MinValue = 0.1
+      Value = 0.8
+    end
+    object Label4: TLabel
+      Left = 8
+      Height = 15
+      Top = 96
+      Width = 61
+      Caption = 'Layer Scale:'
+      ParentColor = False
+    end
+    object bRedraw: TButton
+      Left = 16
+      Height = 25
+      Top = 456
+      Width = 75
+      Caption = 'Redraw'
+      OnClick = bRedrawClick
+      TabOrder = 4
+    end
+    object Label5: TLabel
+      Left = 8
+      Height = 15
+      Top = 124
+      Width = 57
+      Caption = 'Rel. Width:'
+      ParentColor = False
+    end
+    object fsLeafWidth: TFloatSpinEditEx
+      Left = 80
+      Height = 23
+      Top = 120
+      Width = 80
+      MaxLength = 0
+      TabOrder = 5
+      OnChange = bRedrawClick
+      Increment = 0.1
+      MaxValue = 1
+      MinValue = 0.1
+      Value = 0.4
+    end
+    object Label6: TLabel
+      Left = 8
+      Height = 15
+      Top = 152
+      Width = 77
+      Caption = 'Bottom Angle:'
+      ParentColor = False
+    end
+    object seBottomAngle: TSpinEditEx
+      Left = 80
+      Height = 23
+      Top = 148
+      Width = 80
+      MaxLength = 0
+      TabOrder = 6
+      OnChange = bRedrawClick
+      MaxValue = 90
+      NullValue = 0
+      Value = 63
+    end
+    object Label7: TLabel
+      Left = 8
+      Height = 15
+      Top = 180
+      Width = 56
+      Caption = 'Top Angle:'
+      ParentColor = False
+    end
+    object seTopAngle: TSpinEditEx
+      Left = 80
+      Height = 23
+      Top = 176
+      Width = 80
+      MaxLength = 0
+      TabOrder = 7
+      OnChange = bRedrawClick
+      MaxValue = 90
+      NullValue = 0
+      Value = 11
+    end
+    object Label8: TLabel
+      Left = 8
+      Height = 15
+      Top = 208
+      Width = 58
+      Caption = 'Mid Angle:'
+      ParentColor = False
+    end
+    object seMidAngle: TSpinEditEx
+      Left = 80
+      Height = 23
+      Top = 204
+      Width = 80
+      MaxLength = 0
+      TabOrder = 8
+      OnChange = bRedrawClick
+      MaxValue = 45
+      MinValue = -45
+      NullValue = 0
+      Value = -22
+    end
+    object bRandom: TButton
+      Left = 16
+      Height = 25
+      Top = 486
+      Width = 75
+      Caption = 'Randomize'
+      OnClick = bRandomClick
+      TabOrder = 9
+    end
+    object cbEdgeDistort: TComboBox
+      Left = 80
+      Height = 23
+      Top = 232
+      Width = 80
+      ItemHeight = 15
+      ItemIndex = 0
+      Items.Strings = (
+        'None'
+        'Sine'
+        'Saw'
+        'Double Saw'
+        'Circles In'
+        'Circles Out'
+      )
+      OnChange = bRedrawClick
+      Style = csDropDownList
+      TabOrder = 10
+      Text = 'None'
+    end
+    object Label9: TLabel
+      Left = 8
+      Height = 15
+      Top = 236
+      Width = 67
+      Caption = 'Edge Distort:'
+      ParentColor = False
+    end
+    object cbBColor: TColorButton
+      Left = 80
+      Height = 23
+      Top = 260
+      Width = 80
+      BorderWidth = 2
+      ButtonColorSize = 16
+      ButtonColor = 4556383
+      OnColorChanged = bRedrawClick
+    end
+    object cbTColor: TColorButton
+      Left = 80
+      Height = 23
+      Top = 288
+      Width = 80
+      BorderWidth = 2
+      ButtonColorSize = 16
+      ButtonColor = 6076541
+      OnColorChanged = bRedrawClick
+    end
+    object cbRColor: TColorButton
+      Left = 80
+      Height = 23
+      Top = 316
+      Width = 80
+      BorderWidth = 2
+      ButtonColorSize = 16
+      ButtonColor = 3109954
+      OnColorChanged = bRedrawClick
+    end
+    object Label10: TLabel
+      Left = 8
+      Height = 15
+      Top = 264
+      Width = 75
+      Caption = 'Bottom Color:'
+      ParentColor = False
+    end
+    object Label11: TLabel
+      Left = 8
+      Height = 15
+      Top = 292
+      Width = 54
+      Caption = 'Top Color:'
+      ParentColor = False
+    end
+    object Label12: TLabel
+      Left = 8
+      Height = 15
+      Top = 320
+      Width = 52
+      Caption = 'Rib Color:'
+      ParentColor = False
+    end
+    object seRibDist: TSpinEditEx
+      Left = 80
+      Height = 23
+      Top = 344
+      Width = 80
+      MaxLength = 0
+      TabOrder = 11
+      OnChange = bRedrawClick
+      MaxValue = 100
+      NullValue = 0
+      Value = 50
+    end
+    object Label13: TLabel
+      Left = 8
+      Height = 15
+      Top = 348
+      Width = 68
+      Caption = 'Rib Distance:'
+      ParentColor = False
+    end
+  end
+  object pbDisplay: TPaintBox
+    Left = 170
+    Height = 600
+    Top = 0
+    Width = 630
+    Align = alClient
+    OnPaint = pbDisplayPaint
+  end
+end
