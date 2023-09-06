@@ -1,0 +1,429 @@
+object Form1: TForm1
+  Left = 296
+  Height = 600
+  Top = 127
+  Width = 820
+  Caption = 'Tree Generator'
+  ClientHeight = 600
+  ClientWidth = 820
+  OnCreate = FormCreate
+  LCLVersion = '2.2.4.0'
+  object pbDisplay: TPaintBox
+    Left = 220
+    Height = 600
+    Top = 0
+    Width = 600
+    Align = alClient
+    OnPaint = pbDisplayPaint
+  end
+  object ScrollBox1: TScrollBox
+    Left = 0
+    Height = 600
+    Top = 0
+    Width = 220
+    HorzScrollBar.Page = 191
+    VertScrollBar.Page = 596
+    Align = alLeft
+    ClientHeight = 596
+    ClientWidth = 199
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 4
+      Height = 15
+      Top = 8
+      Width = 35
+      Caption = 'Width:'
+      ParentColor = False
+    end
+    object seWidth: TSpinEditEx
+      Left = 88
+      Height = 23
+      Top = 4
+      Width = 103
+      MaxLength = 0
+      TabOrder = 0
+      OnChange = bRedrawClick
+      NullValue = 0
+      Value = 144
+    end
+    object Label2: TLabel
+      Left = 4
+      Height = 15
+      Top = 36
+      Width = 39
+      Caption = 'Height:'
+      ParentColor = False
+    end
+    object seHeight: TSpinEditEx
+      Left = 88
+      Height = 23
+      Top = 32
+      Width = 103
+      MaxLength = 0
+      TabOrder = 1
+      OnChange = bRedrawClick
+      NullValue = 0
+      Value = 144
+    end
+    object bRedraw: TButton
+      Left = 96
+      Height = 25
+      Top = 576
+      Width = 75
+      Caption = 'Redraw'
+      OnClick = bRedrawClick
+      TabOrder = 2
+    end
+    object Label3: TLabel
+      Left = 4
+      Height = 15
+      Top = 176
+      Width = 53
+      Caption = 'Leave Size'
+      ParentColor = False
+    end
+    object seLeaveSize: TSpinEditEx
+      Left = 88
+      Height = 23
+      Top = 172
+      Width = 103
+      MaxLength = 0
+      TabOrder = 3
+      OnChange = bRedrawClick
+      NullValue = 0
+      Value = 16
+    end
+    object Label4: TLabel
+      Left = 4
+      Height = 15
+      Top = 204
+      Width = 75
+      Caption = 'Leave Density:'
+      ParentColor = False
+    end
+    object seLeaveDensity: TFloatSpinEditEx
+      Left = 88
+      Height = 23
+      Top = 200
+      Width = 103
+      MaxLength = 0
+      TabOrder = 4
+      OnChange = bRedrawClick
+      Increment = 0.1
+      Value = 0.35
+    end
+    object bkLightDir: TBGRAKnob
+      Left = 16
+      Height = 50
+      Top = 266
+      Width = 50
+      CurveExponent = 0.100000001490116
+      KnobColor = clBtnFace
+      LightIntensity = 300
+      PositionColor = clBtnText
+      PositionWidth = 4
+      PositionOpacity = 192
+      PositionMargin = 4
+      PositionType = kptFilledCircle
+      UsePhongLighting = True
+      MinValue = 30
+      MaxValue = 360
+      Value = 315
+      OnValueChanged = bkLightDirValueChanged
+      StartFromBottom = True
+    end
+    object bkLightHAngle: TBGRAKnob
+      Left = 96
+      Height = 50
+      Top = 266
+      Width = 50
+      CurveExponent = 0.100000001490116
+      KnobColor = clBtnFace
+      LightIntensity = 300
+      PositionColor = clBtnText
+      PositionWidth = 4
+      PositionOpacity = 192
+      PositionMargin = 4
+      PositionType = kptFilledCircle
+      UsePhongLighting = True
+      MinValue = 270
+      MaxValue = 360
+      Value = 315
+      OnValueChanged = bkLightDirValueChanged
+      StartFromBottom = True
+    end
+    object Label5: TLabel
+      Left = 4
+      Height = 15
+      Top = 232
+      Width = 78
+      Caption = 'Light Direction'
+      ParentColor = False
+    end
+    object Label6: TLabel
+      Left = 88
+      Height = 15
+      Top = 232
+      Width = 100
+      Caption = 'Light Height Angle'
+      ParentColor = False
+    end
+    object Label7: TLabel
+      Left = 4
+      Height = 15
+      Top = 330
+      Width = 56
+      Caption = 'Tree Shape'
+      ParentColor = False
+    end
+    object cbTreeShape: TComboBox
+      Left = 88
+      Height = 23
+      Top = 326
+      Width = 100
+      ItemHeight = 15
+      ItemIndex = 0
+      Items.Strings = (
+        'Spherical'
+        'Conical'
+      )
+      OnChange = bRedrawClick
+      Style = csDropDownList
+      TabOrder = 5
+      Text = 'Spherical'
+    end
+    object Label8: TLabel
+      Left = 4
+      Height = 15
+      Top = 358
+      Width = 70
+      Caption = 'Cone Height:'
+      ParentColor = False
+    end
+    object seConeHeight: TSpinEditEx
+      Left = 88
+      Height = 23
+      Top = 354
+      Width = 103
+      MaxLength = 0
+      TabOrder = 6
+      OnChange = bRedrawClick
+      NullValue = 0
+      Value = 576
+    end
+    object Label9: TLabel
+      Left = 4
+      Height = 15
+      Top = 414
+      Width = 65
+      Caption = 'Leave Shape'
+      ParentColor = False
+    end
+    object cbLeaveShape: TComboBox
+      Left = 88
+      Height = 23
+      Top = 410
+      Width = 100
+      ItemHeight = 15
+      ItemIndex = 0
+      Items.Strings = (
+        'Leave'
+        'Circle'
+        'Ellipse'
+        'Ellipse wide'
+        'Fir'
+        'Heart'
+      )
+      OnChange = bRedrawClick
+      Style = csDropDownList
+      TabOrder = 7
+      Text = 'Leave'
+    end
+    object tbLeaveHue: TTrackBar
+      Left = 88
+      Height = 25
+      Top = 444
+      Width = 100
+      Frequency = 12
+      LineSize = 10
+      Max = 360
+      OnChange = bRedrawClick
+      Position = 110
+      TabOrder = 8
+    end
+    object Label10: TLabel
+      Left = 4
+      Height = 15
+      Top = 449
+      Width = 58
+      Caption = 'Leave Hue:'
+      ParentColor = False
+    end
+    object Label11: TLabel
+      Left = 4
+      Height = 15
+      Top = 482
+      Width = 78
+      Caption = 'Hue Deviation:'
+      ParentColor = False
+    end
+    object seLeaveHueDeviation: TFloatSpinEditEx
+      Left = 88
+      Height = 23
+      Top = 476
+      Width = 103
+      MaxLength = 0
+      TabOrder = 9
+      OnChange = bRedrawClick
+      Increment = 0.1
+      Value = 5
+    end
+    object Label12: TLabel
+      Left = 4
+      Height = 15
+      Top = 513
+      Width = 83
+      Caption = 'Lightness Light:'
+      ParentColor = False
+    end
+    object tbLeaveLightnessLight: TTrackBar
+      Left = 88
+      Height = 25
+      Top = 510
+      Width = 100
+      Frequency = 12
+      LineSize = 10
+      Max = 100
+      OnChange = bRedrawClick
+      Position = 40
+      TabOrder = 10
+    end
+    object Label13: TLabel
+      Left = 4
+      Height = 15
+      Top = 541
+      Width = 80
+      Caption = 'Lightness Dark:'
+      ParentColor = False
+    end
+    object tbLeaveLightnessDark: TTrackBar
+      Left = 88
+      Height = 25
+      Top = 536
+      Width = 100
+      Frequency = 12
+      LineSize = 10
+      Max = 100
+      OnChange = bRedrawClick
+      Position = 0
+      TabOrder = 11
+    end
+    object Label14: TLabel
+      Left = 4
+      Height = 15
+      Top = 386
+      Width = 57
+      Caption = 'Light Gain:'
+      ParentColor = False
+    end
+    object seLightGain: TFloatSpinEditEx
+      Left = 88
+      Height = 23
+      Top = 382
+      Width = 103
+      MaxLength = 0
+      TabOrder = 12
+      OnChange = bRedrawClick
+      Increment = 0.1
+      MaxValue = 0.99
+      MinValue = 0.01
+      Value = 0.3
+    end
+    object Label15: TLabel
+      Left = 4
+      Height = 15
+      Top = 148
+      Width = 84
+      Caption = 'Edge Distortion:'
+      ParentColor = False
+    end
+    object seEdgeDistortion: TFloatSpinEditEx
+      Left = 88
+      Height = 23
+      Top = 144
+      Width = 103
+      MaxLength = 0
+      TabOrder = 13
+      OnChange = bRedrawClick
+      Increment = 0.1
+      MaxValue = 1
+      Value = 0.1
+    end
+    object Label16: TLabel
+      Left = 4
+      Height = 15
+      Top = 64
+      Width = 79
+      Caption = 'Distortion Type'
+      ParentColor = False
+    end
+    object cbDistortionType: TComboBox
+      Left = 88
+      Height = 23
+      Top = 60
+      Width = 100
+      ItemHeight = 15
+      ItemIndex = 0
+      Items.Strings = (
+        'None'
+        'Blur Edge'
+        'Warp Edge - Double SIne'
+        'Warp Edge - Semicircle'
+      )
+      OnChange = bRedrawClick
+      Style = csDropDownList
+      TabOrder = 14
+      Text = 'None'
+    end
+    object Label17: TLabel
+      Left = 4
+      Height = 15
+      Top = 92
+      Width = 81
+      Caption = 'Distortion Frq 1'
+      ParentColor = False
+    end
+    object seDistFreq1: TSpinEditEx
+      Left = 88
+      Height = 23
+      Top = 88
+      Width = 103
+      MaxLength = 0
+      TabOrder = 15
+      OnChange = bRedrawClick
+      MaxValue = 20
+      NullValue = 0
+      Value = 4
+    end
+    object Label18: TLabel
+      Left = 4
+      Height = 15
+      Top = 120
+      Width = 81
+      Caption = 'Distortion Frq 2'
+      ParentColor = False
+    end
+    object seDistFreq2: TSpinEditEx
+      Left = 88
+      Height = 23
+      Top = 116
+      Width = 103
+      MaxLength = 0
+      TabOrder = 16
+      OnChange = bRedrawClick
+      MaxValue = 20
+      NullValue = 0
+      Value = 7
+    end
+  end
+end
