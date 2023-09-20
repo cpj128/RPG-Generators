@@ -76,6 +76,18 @@ type
     function ScanAt(X, Y: Single): TBGRAPixel; override;
   end;
 
+  TSandTextureScanner = class(TBGRACustomScanner)
+  private
+    FRand: TMRandom;
+    FWaveLens, FSteepnesses, FWaveAngles: array of Single;
+    FLightVector: TPoint3D;
+  public
+    constructor Create(LightAngle, LightHAngle: Single);
+    destructor Destroy; override;
+    procedure AddWave(WaveLen, Steepness, Angle: Single);
+    function ScanAt(X, Y: Single): TBGRAPixel; override;
+  end;
+
   function MakeTree(pwidth, pheight: Integer;
                       DistortionType: TDistortionType;
                       DistortionFreq1, DistortionFreq2: Integer;
@@ -550,6 +562,112 @@ begin
   Result := MixPixel(FRClr, Result, d);
 
   //TBGRAGradientScanner.Create(BGRA(95, 134, 69), BGRA(125, 184, 92), gtRadial, TPointF.Create(pRadius / 2, pRadius), TPointF.Create(3 * pRadius / 4, pRadius / 2));
+end;
+
+{ TSandTextureScanner }
+
+constructor TSandTextureScanner.Create(LightAngle, LightHAngle: Single);
+begin
+  FRand := TMRandom.Create;
+  FLightVector := Point3D(-Sin(DegToRad(LightAngle)),
+                          Cos(DegToRad(LightAngle)),
+                          -Sin(DegToRad(LightHAngle)));
+  Normalize3D(FLightVector);
+  {LightDir.x := -Sin(DegToRad(LightAngle));
+  LightDir.Y := Cos(DegToRad(LightAngle));
+  LightHeight := -Cos(DegToRad(LightHAngle));
+  LightDir.Scale(-Sin(DegToRad(LightHAngle)));}
+
+end;
+
+destructor TSandTextureScanner.Destroy;
+begin
+  FRand.Free;
+  inherited;
+end;
+
+procedure TSandTextureScanner.AddWave(WaveLen, Steepness, Angle: Single);
+begin
+  SetLength(FWaveLens, Length(FWaveLens) + 1);
+  SetLength(FSteepnesses, Length(FWaveLens));
+  SetLength(FWaveAngles, Length(FWaveLens));
+  FWaveLens[Length(FWaveLens) - 1] := WaveLen;
+  FSteepnesses[Length(FSteepnesses) - 1] := Steepness;
+  FWaveAngles[Length(FWaveAngles) - 1] := Angle;
+
+end;
+
+function TSandTextureScanner.ScanAt(X, Y: Single): TBGRAPixel;
+const
+  WAVELEN = 100;
+  STEEPNESS = 0.5;
+  WAVEANGLE = 30;
+var
+  //LightDir: TPoint3D;
+  Tangent, Normal, Binormal: TPoint3D;
+  WaveDir: TPointF;
+  hsla: THSLAPixel;
+  k, f, a: Single;
+  LightScale: Single;
+  i: Integer;
+begin
+  Result := BGRA(192 + FRand.Random(64),
+                 EnsureRange(Round((0.816 + FRand.RandomGauss * 0.081) * 255), 0, 255),
+                 128 + FRand.Random(64));
+
+  if Length(FWaveLens) = 0 then
+    Exit;
+
+  Tangent := Point3D(1, 0, 0);
+  Binormal := Point3D(0, 0, 1);
+  for i := 0 to Length(FWaveLens) - 1 do
+  begin
+    WaveDir := TPointF.Create(Cos(DegToRad(FWaveAngles[i])),
+                              Sin(DegToRad(FWaveAngles[i])));
+
+    k := 2 * PI / FWaveLens[i];
+    //float f = k * (dot(d, p.xz) - c * _Time.y);
+    f := k * (WaveDir.X * X + WaveDir.Y * Y);
+    //f := k * X;
+    a := FSteepnesses[i] / k;
+    {Tangent := Point3D(1 - STEEPNESS * Sin(f),
+                       STEEPNESS * Cos(f), 0);
+    Normal := Point3D(-Tangent.Y, Tangent.X, 0);}
+
+    Tangent := Tangent +
+               Point3D(- Sqr(WaveDir.X) * FSteepnesses[i] * Sin(f),
+                       WaveDir.X * FSteepnesses[i] * Cos(f),
+                       -WaveDir.X * WaveDir.Y * FSteepnesses[i] * Sin(f));
+    Binormal := Binormal +
+                Point3D(-WaveDir.X * WaveDir.Y * FSteepnesses[i] * Sin(f),
+                        WaveDir.Y * FSteepnesses[i] * Cos(f),
+                        - Sqr(WaveDir.Y) * FSteepnesses[i] * Sin(f));
+
+  end;
+
+  VectProduct3D(Binormal, Tangent, Normal);
+  Normalize3D(Normal);
+  //LightDir := Point3D(1, 1, -1);
+  //Normalize3D(LightDir);
+  LightScale := ArcCos(Normal * FLightVector);
+
+  //hsla := BGRAToHSLA(Result);
+  hsla.hue := EnsureRange(Round((30 + frand.Random(30)) / 360 * 65553), 0, 65535);
+  hsla.saturation := EnsureRange(Round((25 + frand.Random(7)) / 100 * 65535), 0, 65535);
+  hsla.lightness := EnsureRange(Round(Map(LightScale, -PI, PI, 0.32 * 65535, 0.68 * 65535)), 0, 65535);
+  hsla.Alpha := 65535;
+  Result := HSLAToBGRA(hsla);
+
+  {tangent += float3(
+				-d.x * d.x * (steepness * sin(f)),
+				d.x * (steepness * cos(f)),
+				-d.x * d.y * (steepness * sin(f))
+			);
+			binormal += float3(
+				-d.x * d.y * (steepness * sin(f)),
+				d.y * (steepness * cos(f)),
+				-d.y * d.y * (steepness * sin(f))
+			float3 normal = normalize(cross(binormal, tangent));}
 end;
 
 function MakeLeafy(pRadius, LeavesPerLayer, Layers: Integer;
